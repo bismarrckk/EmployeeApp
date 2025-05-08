@@ -1,0 +1,6 @@
+com\bizz\EmployeeApp\JakartaRestConfiguration.class
+com\bizz\EmployeeApp\entity\Employees.class
+com\bizz\EmployeeApp\service\AbstractFacade.class
+com\bizz\EmployeeApp\controller\EmployeeBean.class
+com\bizz\EmployeeApp\resources\JakartaEE10Resource.class
+com\bizz\EmployeeApp\service\EmployeesFacade.class

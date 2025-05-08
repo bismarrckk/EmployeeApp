@@ -1,0 +1,137 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+     >
+      
+      
+    <h:head>
+        <title>EMS</title>
+    </h:head>
+    <h:body>
+    <div class="card">
+    <h:form id="form">
+        <p:growl id="messages" showDetail="false" />
+
+        <p:toolbar>
+            <p:toolbarGroup>
+                <p:commandButton value="New" icon="pi pi-plus" actionListener="#{employeeBean.newEmployee()}"
+                    update=":dialogs:manage-employees" oncomplete="PF('manageEmployeesDialog').show()"
+                    styleClass="ui-button-primary" style="margin-right: .5rem">
+                    <p:resetInput target=":dialogs:manage-employees" />
+                </p:commandButton>
+              
+            </p:toolbarGroup>
+           
+        </p:toolbar>
+
+        <p:dataTable id="dt-employees" widgetVar="dtEmployees" var="employee" value="#{employeeBean.allEmployees()}"
+                     rowKey="#{employee.id}"   reflow="true"  selection="#{employeeBean.selectedEmployee}" paginator="true" rows="5" selectionRowMode="add" paginatorPosition="bottom">
+            <f:facet name="header">
+                <div class="container" align="center">
+                    <span style="font-weight: bold">Employees</span>
+                   
+                </div>
+            </f:facet>
+            <p:column headerText="ID" >
+                <h:outputText value="#{employee.id}" />
+            </p:column>
+            <p:column headerText="First Name" >
+                <h:outputText value="#{employee.firstName}" />
+            </p:column>
+            <p:column headerText="Last Name" >
+                <h:outputText value="#{employee.lastName}" />
+            </p:column>
+          
+            <p:column headerText="Salary">
+                <h:outputText value="#{employee.salary}" style="font-weight: 700">
+                    <f:convertNumber currencySymbol="Ksh." type="currency" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Email" >
+                <h:outputText value="#{employee.email}" />
+            </p:column>
+            <p:column headerText="Department" >
+               <h:outputText value="#{employee.department}" />
+            </p:column>
+           
+            <p:column exportable="false" ariaHeaderText="Actions">
+                <p:commandButton icon="pi pi-user-edit" update=":dialogs:manage-employees"
+                    oncomplete="PF('manageEmployeesDialog').show()"
+                    styleClass="edit-button rounded-button ui-button-warning" process="@this">
+                    <f:setPropertyActionListener value="#{employee}" target="#{employeeBean.selectedEmployee}" />
+                    <p:resetInput target=":dialogs:manage-employees" />
+                </p:commandButton>
+                <p:commandButton class="ui-button-danger rounded-button" icon="pi pi-trash"
+                                 process="@this"
+                                 oncomplete="PF('deleteEmployeeDialog').show()">
+                    <f:setPropertyActionListener value="#{employee}" target="#{employeeBean.selectedEmployee}" />
+                </p:commandButton>
+            </p:column>
+
+        </p:dataTable>
+    </h:form>
+
+    <h:form id="dialogs">
+        <p:dialog header="Employee Details" showEffect="fade" modal="true" widgetVar="manageEmployeesDialog"
+            responsive="true">
+            <p:outputPanel id="manage-employees" class="ui-fluid">
+                <p:outputPanel rendered="#{not empty employeeBean.selectedEmployee}">
+                   
+                    <div class="field">
+                        <p:outputLabel for="firstName">First Name</p:outputLabel>
+                        <p:inputText id="firstName" value="#{employeeBean.selectedEmployee.firstName}" required="true" />
+                    </div>
+                    <div class="field" >
+                        <p:outputLabel for="lastName">Last Name</p:outputLabel>
+                        <p:inputText id="lastName" value="#{employeeBean.selectedEmployee.lastName}" required="true" />
+                    </div>
+                   <div class="field" >
+                        <p:outputLabel for="email">Email</p:outputLabel>
+                        <p:inputText id="email" value="#{employeeBean.selectedEmployee.email}" required="true" />
+                    </div>
+                   
+                   
+                        <div class="field">
+                            <p:outputLabel for="salary">Salary</p:outputLabel>
+                            <p:inputNumber id="salary" value="#{employeeBean.selectedEmployee.salary}" symbol=" KSH."
+                                symbolPosition="s" decimalSeparator="." thousandSeparator="," required="true" />
+                        </div>
+                        <div class="field">
+                            <p:outputLabel for="department">Department</p:outputLabel>
+                            <p:inputText id="department" value="#{employeeBean.selectedEmployee.department}" required="true" />
+                        </div>
+                    <small style="font-style: italic">Fields Marked with * are mandatory</small>
+                </p:outputPanel>
+                
+            </p:outputPanel>
+
+            <f:facet name="footer">
+                <p:commandButton value="Save" icon="pi pi-check" actionListener="#{employeeBean.save()}"
+                    update="manage-employees" process="manage-employees @this" />
+                <p:commandButton value="Cancel" icon="pi pi-times" onclick="PF('manageEmployeesDialog').hide()"
+                    class="ui-button-secondary" type="button" />
+            </f:facet>
+        </p:dialog>
+
+        <p:confirmDialog widgetVar="deleteEmployeeDialog" showEffect="fade" width="300"
+            message="Delete Employee?" header="Confirm" severity="warn">
+            <p:commandButton value="Yes" icon="pi pi-check" actionListener="#{employeeBean.delete()}"
+                process="@this" 
+                oncomplete="PF('deleteEmployeeDialog').hide()" />
+            <p:commandButton value="No" type="button" styleClass="ui-button-secondary" icon="pi pi-times"
+                onclick="PF('deleteEmployeeDialog').hide()" />
+        </p:confirmDialog>
+
+        <p:confirmDialog global="true" showEffect="fade" width="300">
+            <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+            <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no ui-button-secondary"
+                icon="pi pi-times" />
+        </p:confirmDialog>
+    </h:form>
+</div>
+     
+       
+    </h:body>
+</html>
