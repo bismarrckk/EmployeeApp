@@ -25,4 +25,8 @@ Navigate to services tab under servers, add payara server
 The glassfish-resources.xml will provide server side configurations for payara
 The persistence.xml file will provide application level configurations
 Run the project
+<<<<<<< HEAD
 This application will automatically be deployed in the payara server and your default browser will automatically start
+=======
+This application will automatically be deployed in the payara server and your default browser will automatically start
+>>>>>>> 7b99d0e59b695bb27a2bd6a85437d937a646a6e4
